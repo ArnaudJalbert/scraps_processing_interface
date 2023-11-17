@@ -15,5 +15,6 @@ export const defaultStyles = StyleSheet.create({
     paddingVertical: 10,
     textAlign: "center",
     backgroundColor: "yellow",
+    marginVertical: 10,
   },
 });
