@@ -2,12 +2,12 @@ function drawScrapOutline(ctx, origin, scrapPoints, pixelPerCentimeter, zoom) {
   // drawing the scrap
   ctx.beginPath();
   ctx.moveTo(
-    origin.x + scrapPoints[0].x * pixelPerCentimeter * zoom,
-    origin.y + scrapPoints[0].y * pixelPerCentimeter * zoom,
+    origin[0] + scrapPoints[0][0] * pixelPerCentimeter * zoom,
+    origin[1] + scrapPoints[0][1] * pixelPerCentimeter * zoom,
   );
   for (const scrapPoint of scrapPoints.slice(1)) {
-    const x = origin.x + scrapPoint.x * pixelPerCentimeter * zoom;
-    const y = origin.y + scrapPoint.y * pixelPerCentimeter * zoom;
+    const x = origin[0] + scrapPoint[0] * pixelPerCentimeter * zoom;
+    const y = origin[1] + scrapPoint[1] * pixelPerCentimeter * zoom;
     ctx.lineTo(x, y);
   }
   ctx.fill();
@@ -26,27 +26,27 @@ function drawHorizontalMeasure(
   const heightMarginFactor = 0.95;
   const tickHeight = 0.01;
   // left horizontal tick
-  const leftStart = {
-    x: width * leftWidthMarginFactor,
-    y: height * heightMarginFactor,
-  };
+  const leftStart = [
+    width * leftWidthMarginFactor,
+    height * heightMarginFactor,
+  ];
   ctx.beginPath();
-  ctx.moveTo(leftStart.x, leftStart.y + height * tickHeight);
-  ctx.lineTo(leftStart.x, leftStart.y - height * tickHeight);
+  ctx.moveTo(leftStart[0], leftStart[1] + height * tickHeight);
+  ctx.lineTo(leftStart[0], leftStart[1] - height * tickHeight);
   ctx.stroke();
   // right horizontal tick
-  const rightStart = {
-    x: width * rightWidthMarginFactor,
-    y: height * heightMarginFactor,
-  };
+  const rightStart = [
+    width * rightWidthMarginFactor,
+    height * heightMarginFactor,
+  ];
   ctx.beginPath();
-  ctx.moveTo(rightStart.x, rightStart.y + height * tickHeight);
-  ctx.lineTo(rightStart.x, rightStart.y - height * tickHeight);
+  ctx.moveTo(rightStart[0], rightStart[1] + height * tickHeight);
+  ctx.lineTo(rightStart[0], rightStart[1] - height * tickHeight);
   ctx.stroke();
   // line between two ticks
   ctx.beginPath();
-  ctx.moveTo(leftStart.x, leftStart.y);
-  ctx.lineTo(rightStart.x, rightStart.y);
+  ctx.moveTo(leftStart[0], leftStart[1]);
+  ctx.lineTo(rightStart[0], rightStart[1]);
   ctx.stroke();
   // text to indicate measure
   ctx.font = "20px Helvetica";
@@ -57,7 +57,7 @@ function drawHorizontalMeasure(
     (1 - leftWidthMarginFactor * 2) *
     shapeWidth
   ).toFixed(2)}cm`;
-  ctx.fillText(horizontalMeasureText, width / 2, leftStart.y + height * 0.02);
+  ctx.fillText(horizontalMeasureText, width / 2, leftStart[1] + height * 0.02);
 }
 
 function drawVerticalMeasure(
@@ -74,27 +74,27 @@ function drawVerticalMeasure(
   const tickWidth = 0.01;
   const textDistance = 0.03;
   // top tick
-  const topStart = {
-    x: width * widthMarginFactor,
-    y: height * topHeightMarginFactor,
-  };
+  const topStart = [
+    width * widthMarginFactor,
+    height * topHeightMarginFactor,
+  ];
   ctx.beginPath();
-  ctx.moveTo(topStart.x + width * tickWidth, topStart.y);
-  ctx.lineTo(topStart.x - width * tickWidth, topStart.y);
+  ctx.moveTo(topStart[0] + width * tickWidth, topStart[1]);
+  ctx.lineTo(topStart[0] - width * tickWidth, topStart[1]);
   ctx.stroke();
   // bottom tick
-  const bottomStart = {
-    x: width * widthMarginFactor,
-    y: height * bottomHeightMarginFactor,
-  };
+  const bottomStart = [
+    width * widthMarginFactor,
+    height * bottomHeightMarginFactor,
+  ];
   ctx.beginPath();
-  ctx.moveTo(bottomStart.x + width * tickWidth, bottomStart.y);
-  ctx.lineTo(bottomStart.x - width * tickWidth, bottomStart.y);
+  ctx.moveTo(bottomStart[0] + width * tickWidth, bottomStart[1]);
+  ctx.lineTo(bottomStart[0] - width * tickWidth, bottomStart[1]);
   ctx.stroke();
   // line between two ticks
   ctx.beginPath();
-  ctx.moveTo(topStart.x, topStart.y);
-  ctx.lineTo(bottomStart.x, bottomStart.y);
+  ctx.moveTo(topStart[0], topStart[1]);
+  ctx.lineTo(bottomStart[0], bottomStart[1]);
   ctx.stroke();
   // text to indicate measure
   ctx.font = "20px Helvetica";
@@ -107,8 +107,8 @@ function drawVerticalMeasure(
   ).toFixed(2)}cm`;
   ctx.fillText(
     horizontalMeasureText,
-    topStart.x + width * textDistance * 2,
-    topStart.y - height * textDistance,
+    topStart[0] + width * textDistance * 2,
+    topStart[1] - height * textDistance,
   );
 }
 
@@ -132,7 +132,7 @@ export default function drawScrap(
   ctx.canvas.height = canvasHeight;
 
   // setting the origin at the middle of the canvas
-  const origin = { x: canvasWidth / 2, y: canvasHeight / 2 };
+  const origin = [canvasWidth / 2, canvasHeight / 2];
 
   drawScrapOutline(ctx, origin, scrapPoints, pixelPerCentimeter, zoom);
 

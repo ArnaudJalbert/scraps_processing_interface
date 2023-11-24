@@ -1,7 +1,7 @@
 import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import Canvas from "react-native-canvas";
 import { defaultStyles } from "./styles/DefaultStyles";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Slider } from "@miblanchard/react-native-slider";
 import drawScrap from "./DrawScrap";
 import {
@@ -42,8 +42,8 @@ const testScrapPoints = [
 function getShapeInfo(canvasWidth, canvasHeight, scrap) {
   const shapeInfo = { shapeWidth: 0, shapeHeight: 0, pixelPerCentimeter: 0 };
   // width and height of the shape
-  shapeInfo.shapeWidth = getShapeWidth(scrap.points);
-  shapeInfo.shapeHeight = getShapeHeight(scrap.points);
+  shapeInfo.shapeWidth = getShapeWidth(scrap["dimensions"]);
+  shapeInfo.shapeHeight = getShapeHeight(scrap["dimensions"]);
   // from the size of the scrap and width of the canvas, figure out the "pixel/centimeter" ratio
   shapeInfo.pixelPerCentimeter = getPixelPerCentimeter(
     shapeInfo.shapeWidth,
@@ -56,66 +56,74 @@ function getShapeInfo(canvasWidth, canvasHeight, scrap) {
 }
 
 export default function OneScrapView({ navigation }) {
+  // all scraps data
+  let scraps = null;
+  // current scrap to be drawn
+  let currentScrapIndex = 0;
+  // scrap to draw
+  let scrap = null;
+  // shape information
+  let shapeInformation = null;
+
   // width and height of canvas
   const canvasWidth = Dimensions.get("window").width - marginHorizontal * 2;
   // setting height to only take 50% of the screen
   const canvasHeight = Dimensions.get("window").height * 0.65;
-  // current scrap to be drawn
-  let currentScrapIndex = 0;
-  let scrap = testScrapPoints[currentScrapIndex];
-  // info about the shape depending on the canvas
-  let shapeInfo = getShapeInfo(canvasWidth, canvasHeight, scrap);
 
   // reference to the ctx of canvas
   let ctx = null;
 
-  // show information about the scrap
-  const openScrapInformation = () => {
-    console.log("Opening Scrap Information");
+  const loadScrapsData = () => {
+    const options = {
+      method: "GET",
+    };
+    fetch("http://127.0.0.1:5000/scraps", options)
+      .then((response) => response.json())
+      .then(async (data) => {
+        scraps = data;
+        scrap = scraps[currentScrapIndex];
+        shapeInformation = getShapeInfo(canvasWidth, canvasHeight, scrap);
+        console.log("fsdankjfdahsjk");
+        updateScrap(1);
+      })
+      .catch((error) => console.error(error));
   };
 
   // reference to the canvas
   const ref = useRef(null);
-  // make sure canvas is loaded and load initial scrap
+
+  // make sure canvas and data are loaded and load initial scrap
   useEffect(() => {
     // Code template from : https://www.atomlab.dev/tutorials/react-native-canvas
     if (ref.current) {
       ctx = ref.current.getContext("2d");
-      drawScrap(
-        scrap.points,
-        ctx,
-        1,
-        canvasWidth,
-        canvasHeight,
-        shapeInfo.pixelPerCentimeter,
-        shapeInfo.shapeWidth,
-        shapeInfo.shapeHeight,
-      );
+      loadScrapsData();
     }
   }, [ref]);
   // update the scrap when values are changed
 
   const updateScrap = (value) => {
+    console.log(scrap);
     drawScrap(
-      scrap.points,
+      scrap["dimensions"],
       ctx,
       value,
       canvasWidth,
       canvasHeight,
-      shapeInfo.pixelPerCentimeter,
-      shapeInfo.shapeWidth,
-      shapeInfo.shapeHeight,
+      shapeInformation.pixelPerCentimeter,
+      shapeInformation.shapeWidth,
+      shapeInformation.shapeHeight,
     );
   };
 
   const updateShapeInfo = () => {
-    scrap = testScrapPoints[currentScrapIndex];
-    shapeInfo = getShapeInfo(canvasWidth, canvasHeight, scrap);
+    scrap = scraps[currentScrapIndex];
+    shapeInformation = getShapeInfo(canvasWidth, canvasHeight, scrap);
   };
   // changed the scrap when user goes to next scrap
   const loadNextScrap = () => {
     // check that this is not the last scrap
-    if (currentScrapIndex >= testScrapPoints.length - 1) {
+    if (currentScrapIndex >= scraps.length - 1) {
       return;
     }
     // update index and all info
@@ -137,9 +145,14 @@ export default function OneScrapView({ navigation }) {
     updateScrap(1);
   };
 
+  // show information about the scrap
+  const openScrapInformation = () => {
+    console.log("Opening Scrap Information");
+  };
+
   return (
     <View style={oneScrapViewStyles.container}>
-      <Text style={defaultStyles.title}>{scrap.id}</Text>
+      <Text style={defaultStyles.title}>{"allo"}</Text>
       <Pressable onPress={openScrapInformation}>
         <Canvas style={oneScrapViewStyles.canvas} ref={ref} />
       </Pressable>
