@@ -4,35 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef49429b-3694-4be2-bc4f-8a62c76269b8" name="Changes" comment="working register form + home page">
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-Black.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-BlackItalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-Bold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-BoldItalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-ExtraBold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-ExtraBoldItalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-ExtraLight.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-ExtraLightItalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-Italic-VariableFont_wght.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-Italic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-Light.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-LightItalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-Medium.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-MediumItalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-Regular.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-SemiBold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-SemiBoldItalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-Thin.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-ThinItalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/fonts/PublicSans-VariableFont_wght.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/RegisterScrap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/WelcomePage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/styles/DefaultStyles.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/react-native.config.js" afterDir="false" />
+    <list default="true" id="ef49429b-3694-4be2-bc4f-8a62c76269b8" name="Changes" comment="update workfile">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/DrawScrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/DrawScrap.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/GetScrapInformation.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/GetScrapInformation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/OneScrapView.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/OneScrapView.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +39,10 @@
             <RecentBranchesForRepo>
               <option name="branches">
                 <list>
+                  <RecentBranch>
+                    <option name="branchName" value="one-scrap-view" />
+                    <option name="lastUsedInstant" value="1700236753" />
+                  </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="register-ui-component" />
                     <option name="lastUsedInstant" value="1699024855" />
@@ -100,13 +80,14 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;register-ui-component&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;one-scrap-view&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/arnaudjalbert/Projects/scraps_processing_interface&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.externalTools&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Users/arnaudjalbert/Library/Application Support/JetBrains/Toolbox/apps/WebStorm/ch-0/232.10072.28/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -117,6 +98,23 @@
       <recent name="$PROJECT_DIR$/assets/fonts/Public_Sans" />
       <recent name="$PROJECT_DIR$/assets" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="start-ios" type="ShConfigurationType" activateToolWindowBeforeRun="false">
+      <option name="SCRIPT_TEXT" value="npx expo start --ios" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="/bin/zsh" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="false" />
+      <envs />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -139,6 +137,14 @@
       <workItem from="1699382483783" duration="1261000" />
       <workItem from="1699452978781" duration="33000" />
       <workItem from="1700236246326" duration="211000" />
+      <workItem from="1700337389579" duration="10621000" />
+      <workItem from="1700405581180" duration="17000" />
+      <workItem from="1700849440115" duration="526000" />
+      <workItem from="1700850064396" duration="1959000" />
+      <workItem from="1700858252658" duration="9421000" />
+      <workItem from="1700929115010" duration="1915000" />
+      <workItem from="1701091992493" duration="14000" />
+      <workItem from="1701292759799" duration="3609000" />
     </task>
     <task id="LOCAL-00001" summary="prototype done!">
       <option name="closed" value="true" />
@@ -148,7 +154,47 @@
       <option name="project" value="LOCAL" />
       <updated>1699024822782</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added one scrap view component file and setup">
+      <option name="closed" value="true" />
+      <created>1700237085481</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1700237085481</updated>
+    </task>
+    <task id="LOCAL-00003" summary="added canvas to draw the scraps and all the logic and measurements to it">
+      <option name="closed" value="true" />
+      <created>1700258119617</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1700258119617</updated>
+    </task>
+    <task id="LOCAL-00004" summary="additional stuff to the canvas and ability to navigate between scraps">
+      <option name="closed" value="true" />
+      <created>1700359403246</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1700359403246</updated>
+    </task>
+    <task id="LOCAL-00005" summary="using real data to display scraps for all scraps">
+      <option name="closed" value="true" />
+      <created>1700869869601</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1700869869601</updated>
+    </task>
+    <task id="LOCAL-00006" summary="update workfile">
+      <option name="closed" value="true" />
+      <created>1700869888185</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1700869888185</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,6 +214,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="prototype done!" />
     <MESSAGE value="working register form + home page" />
-    <option name="LAST_COMMIT_MESSAGE" value="working register form + home page" />
+    <MESSAGE value="added one scrap view component file and setup" />
+    <MESSAGE value="added canvas to draw the scraps and all the logic and measurements to it" />
+    <MESSAGE value="additional stuff to the canvas and ability to navigate between scraps" />
+    <MESSAGE value="using real data to display scraps for all scraps" />
+    <MESSAGE value="update workfile" />
+    <option name="LAST_COMMIT_MESSAGE" value="update workfile" />
   </component>
 </project>

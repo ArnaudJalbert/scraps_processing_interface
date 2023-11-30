@@ -20,6 +20,9 @@ export default function WelcomePage({ navigation }) {
         <Pressable onPress={() => navigation.navigate("Register Scrap")}>
           <Text style={defaultStyles.option}> register a scrap</Text>
         </Pressable>
+        <Pressable onPress={() => navigation.navigate("View Scraps")}>
+          <Text style={defaultStyles.option}> view scraps</Text>
+        </Pressable>
       </View>
     </View>
   );

@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import WelcomePage from "./components/WelcomePage";
 import RegisterScrap from "./components/RegisterScrap";
+import OneScrapView from "./components/OneScrapView";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -16,6 +17,12 @@ export default function App() {
           component={RegisterScrap}
           initialParams={{ navigation: navigator }}
           options={{ title: "capture" }}
+        />
+        <Stack.Screen
+            name="View Scraps"
+            component={OneScrapView}
+            initialParams={{ navigation: navigator }}
+            options={{ title: "view" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
