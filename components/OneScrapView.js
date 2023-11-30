@@ -83,7 +83,6 @@ export default function OneScrapView({ navigation }) {
         scraps = data;
         scrap = scraps[currentScrapIndex];
         shapeInformation = getShapeInfo(canvasWidth, canvasHeight, scrap);
-        console.log("fsdankjfdahsjk");
         updateScrap(1);
       })
       .catch((error) => console.error(error));
@@ -152,7 +151,7 @@ export default function OneScrapView({ navigation }) {
 
   return (
     <View style={oneScrapViewStyles.container}>
-      <Text style={defaultStyles.title}>{"allo"}</Text>
+      <Text style={defaultStyles.title}>Scrap ID</Text>
       <Pressable onPress={openScrapInformation}>
         <Canvas style={oneScrapViewStyles.canvas} ref={ref} />
       </Pressable>

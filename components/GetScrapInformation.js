@@ -40,9 +40,9 @@ export function getPixelPerCentimeter(
   canvasWidth,
   canvasHeight,
 ) {
-  const height = canvasHeight / 2 / shapeHeight;
-  const width = canvasWidth / 2 / shapeWidth;
-  if (height > width) {
+  const height = (canvasHeight / shapeHeight);
+  const width = (canvasWidth / shapeWidth);
+  if (height < width) {
     return height;
   }
   return width;

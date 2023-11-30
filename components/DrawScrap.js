@@ -20,6 +20,7 @@ function drawHorizontalMeasure(
   width,
   height,
   zoom,
+  pixelPerCentimeter,
 ) {
   const leftWidthMarginFactor = 0.05;
   const rightWidthMarginFactor = 1 - leftWidthMarginFactor;
@@ -54,8 +55,8 @@ function drawHorizontalMeasure(
   ctx.textAlign = "center";
   const horizontalMeasureText = `${(
     (1 / zoom) *
-    (1 - leftWidthMarginFactor * 2) *
-    shapeWidth
+    (width / pixelPerCentimeter) *
+    (rightWidthMarginFactor - leftWidthMarginFactor)
   ).toFixed(2)}cm`;
   ctx.fillText(horizontalMeasureText, width / 2, leftStart[1] + height * 0.02);
 }
@@ -67,6 +68,7 @@ function drawVerticalMeasure(
   width,
   height,
   zoom,
+  pixelPerCentimeter,
 ) {
   const topHeightMarginFactor = 0.1;
   const bottomHeightMarginFactor = 1 - topHeightMarginFactor;
@@ -74,10 +76,7 @@ function drawVerticalMeasure(
   const tickWidth = 0.01;
   const textDistance = 0.03;
   // top tick
-  const topStart = [
-    width * widthMarginFactor,
-    height * topHeightMarginFactor,
-  ];
+  const topStart = [width * widthMarginFactor, height * topHeightMarginFactor];
   ctx.beginPath();
   ctx.moveTo(topStart[0] + width * tickWidth, topStart[1]);
   ctx.lineTo(topStart[0] - width * tickWidth, topStart[1]);
@@ -102,8 +101,7 @@ function drawVerticalMeasure(
   ctx.textAlign = "center";
   const horizontalMeasureText = `${(
     (1 / zoom) *
-    (1 - topHeightMarginFactor * 2) *
-    shapeHeight
+    (height / pixelPerCentimeter)
   ).toFixed(2)}cm`;
   ctx.fillText(
     horizontalMeasureText,
@@ -112,9 +110,33 @@ function drawVerticalMeasure(
   );
 }
 
-function drawMeasurement(ctx, shapeWidth, shapeHeight, width, height, zoom) {
-  drawHorizontalMeasure(ctx, shapeWidth, shapeHeight, width, height, zoom);
-  drawVerticalMeasure(ctx, shapeWidth, shapeHeight, width, height, zoom);
+function drawMeasurement(
+  ctx,
+  shapeWidth,
+  shapeHeight,
+  width,
+  height,
+  zoom,
+  pixelPerCentimeter,
+) {
+  drawHorizontalMeasure(
+    ctx,
+    shapeWidth,
+    shapeHeight,
+    width,
+    height,
+    zoom,
+    pixelPerCentimeter,
+  );
+  drawVerticalMeasure(
+    ctx,
+    shapeWidth,
+    shapeHeight,
+    width,
+    height,
+    zoom,
+    pixelPerCentimeter,
+  );
 }
 
 export default function drawScrap(
@@ -143,5 +165,6 @@ export default function drawScrap(
     canvasWidth,
     canvasHeight,
     zoom,
+    pixelPerCentimeter,
   );
 }
