@@ -23,6 +23,9 @@ export default function WelcomePage({ navigation }) {
         <Pressable onPress={() => navigation.navigate("View Scraps")}>
           <Text style={defaultStyles.option}> view scraps</Text>
         </Pressable>
+        <Pressable onPress={() => navigation.navigate("Login")}>
+          <Text style={defaultStyles.option}> login</Text>
+        </Pressable>
       </View>
     </View>
   );

@@ -57,7 +57,7 @@ function getShapeInfo(canvasWidth, canvasHeight, scrap) {
 
 export default function OneScrapView({ navigation }) {
   // all scraps data
-  let scraps = null;
+  let scraps = [];
   // current scrap to be drawn
   let currentScrapIndex = 0;
   // scrap to draw
@@ -74,16 +74,18 @@ export default function OneScrapView({ navigation }) {
   let ctx = null;
 
   const loadScrapsData = () => {
+    console.log("loading")
     const options = {
       method: "GET",
     };
-    fetch("http://127.0.0.1:5000/scraps", options)
+    const requestString = `https://scraps-processing-api.fly.dev/scraps?owner=${global.loggedUser[0]["user_id"]}`;
+    fetch(requestString, options)
       .then((response) => response.json())
       .then(async (data) => {
         scraps = data;
         scrap = scraps[currentScrapIndex];
         shapeInformation = getShapeInfo(canvasWidth, canvasHeight, scrap);
-        updateScrap(1);
+        updateScrap(0.8);
       })
       .catch((error) => console.error(error));
   };
@@ -94,25 +96,26 @@ export default function OneScrapView({ navigation }) {
   // make sure canvas and data are loaded and load initial scrap
   useEffect(() => {
     // Code template from : https://www.atomlab.dev/tutorials/react-native-canvas
+    loadScrapsData();
     if (ref.current) {
       ctx = ref.current.getContext("2d");
-      loadScrapsData();
     }
   }, [ref]);
-  // update the scrap when values are changed
 
+  // update the scrap when values are changed
   const updateScrap = (value) => {
-    console.log(scrap);
-    drawScrap(
-      scrap["dimensions"],
-      ctx,
-      value,
-      canvasWidth,
-      canvasHeight,
-      shapeInformation.pixelPerCentimeter,
-      shapeInformation.shapeWidth,
-      shapeInformation.shapeHeight,
-    );
+    if (ref.current) {
+      drawScrap(
+        scrap["dimensions"],
+        ctx,
+        value,
+        canvasWidth,
+        canvasHeight,
+        shapeInformation.pixelPerCentimeter,
+        shapeInformation.shapeWidth,
+        shapeInformation.shapeHeight,
+      );
+    }
   };
 
   const updateShapeInfo = () => {
@@ -121,6 +124,11 @@ export default function OneScrapView({ navigation }) {
   };
   // changed the scrap when user goes to next scrap
   const loadNextScrap = () => {
+    // check that scraps are loaded
+    if (scraps == null) {
+      loadScrapsData();
+      return;
+    }
     // check that this is not the last scrap
     if (currentScrapIndex >= scraps.length - 1) {
       return;
@@ -129,7 +137,7 @@ export default function OneScrapView({ navigation }) {
     currentScrapIndex++;
     updateShapeInfo();
     // update the canvas
-    updateScrap(1);
+    updateScrap(0.9);
   };
 
   const loadPreviousScrap = () => {
@@ -149,9 +157,19 @@ export default function OneScrapView({ navigation }) {
     console.log("Opening Scrap Information");
   };
 
+  const refresh = () => {
+    loadScrapsData();
+    currentScrapIndex = 0;
+
+  }
+
+  const openFilterWindow = () => {
+    navigation.navigate("Filter Scraps", {onGoBack: refresh});
+  };
+
   return (
     <View style={oneScrapViewStyles.container}>
-      <Text style={defaultStyles.title}>Scrap ID</Text>
+      <Text style={defaultStyles.title}>Allo</Text>
       <Pressable onPress={openScrapInformation}>
         <Canvas style={oneScrapViewStyles.canvas} ref={ref} />
       </Pressable>
@@ -161,12 +179,19 @@ export default function OneScrapView({ navigation }) {
         maximumValue={2}
         onValueChange={(value) => updateScrap(value)}
       />
-      <View style={oneScrapViewStyles.navigationButtons}>
-        <Pressable onPress={loadPreviousScrap}>
-          <Text style={oneScrapViewStyles.navigationButtonText}>Previous</Text>
-        </Pressable>
-        <Pressable onPress={loadNextScrap}>
-          <Text style={oneScrapViewStyles.navigationButtonText}>Next</Text>
+      <View style={oneScrapViewStyles.buttons}>
+        <View style={oneScrapViewStyles.navigationButtons}>
+          <Pressable onPress={loadPreviousScrap}>
+            <Text style={oneScrapViewStyles.navigationButtonText}>
+              Previous
+            </Text>
+          </Pressable>
+          <Pressable onPress={loadNextScrap}>
+            <Text style={oneScrapViewStyles.navigationButtonText}>Next</Text>
+          </Pressable>
+        </View>
+        <Pressable onPress={openFilterWindow}>
+          <Text style={oneScrapViewStyles.filterButton}>Filter</Text>
         </Pressable>
       </View>
     </View>
@@ -185,8 +210,12 @@ const oneScrapViewStyles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
   },
-  navigationButtons: {
+  buttons: {
     flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+  },
+  navigationButtons: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     backgroundColor: "#000",
@@ -196,5 +225,11 @@ const oneScrapViewStyles = StyleSheet.create({
     paddingVertical: 10,
     justifyContent: "center",
     alignItems: "center",
+  },
+  filterButton: {
+    color: "#fff",
+    backgroundColor: "#000",
+    paddingVertical: 10,
+    textAlign: "center",
   },
 });
