@@ -1,4 +1,11 @@
-import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import Canvas from "react-native-canvas";
 import { defaultStyles } from "./styles/DefaultStyles";
 import { useEffect, useRef, useState } from "react";
@@ -74,24 +81,41 @@ export default function OneScrapView({ navigation }) {
   let ctx = null;
 
   const loadScrapsData = () => {
-    console.log("loading")
     const options = {
       method: "GET",
     };
-    const requestString = `https://scraps-processing-api.fly.dev/scraps?owner=${global.loggedUser[0]["user_id"]}`;
+    // filters to get scraps
+    const filters = global.scrapFilters[0];
+    let filterString = "?";
+    for (const filter in filters) {
+      filterString += `${filter}=${filters[filter]}&`;
+    }
+    filterString = filterString.slice(0, -1);
+    let requestString = `https://scraps-processing-api.fly.dev/scraps`;
+    if (filterString !== "?") {
+      requestString += filterString;
+    }
+    console.log(requestString);
     fetch(requestString, options)
       .then((response) => response.json())
       .then(async (data) => {
-        scraps = data;
-        scrap = scraps[currentScrapIndex];
-        shapeInformation = getShapeInfo(canvasWidth, canvasHeight, scrap);
-        updateScrap(0.8);
+        if (data.length > 0) {
+          scraps = data;
+          scrap = scraps[currentScrapIndex];
+          shapeInformation = getShapeInfo(canvasWidth, canvasHeight, scrap);
+          updateScrap(0.8);
+        } else {
+          scraps = [];
+          scrap = null;
+          drawBlank();
+        }
       })
       .catch((error) => console.error(error));
   };
 
   // reference to the canvas
   const ref = useRef(null);
+  let focusHandler = null;
 
   // make sure canvas and data are loaded and load initial scrap
   useEffect(() => {
@@ -100,11 +124,30 @@ export default function OneScrapView({ navigation }) {
     if (ref.current) {
       ctx = ref.current.getContext("2d");
     }
-  }, [ref]);
 
+    focusHandler = navigation.addListener("focus", () => {
+      refresh();
+    });
+
+    return focusHandler;
+  }, [ref, focusHandler]);
+
+  const drawBlank = () => {
+    ctx.canvas.width = canvasWidth;
+    ctx.canvas.height = canvasHeight;
+
+    ctx.font = "20px Helvetica";
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
+    ctx.fillText(
+      "no scraps match your filters",
+      canvasWidth / 2,
+      canvasHeight / 2,
+    );
+  };
   // update the scrap when values are changed
   const updateScrap = (value) => {
-    if (ref.current) {
+    if (ref.current && scrap !== null) {
       drawScrap(
         scrap["dimensions"],
         ctx,
@@ -119,8 +162,10 @@ export default function OneScrapView({ navigation }) {
   };
 
   const updateShapeInfo = () => {
-    scrap = scraps[currentScrapIndex];
-    shapeInformation = getShapeInfo(canvasWidth, canvasHeight, scrap);
+    if (scrap !== null) {
+      scrap = scraps[currentScrapIndex];
+      shapeInformation = getShapeInfo(canvasWidth, canvasHeight, scrap);
+    }
   };
   // changed the scrap when user goes to next scrap
   const loadNextScrap = () => {
@@ -133,6 +178,9 @@ export default function OneScrapView({ navigation }) {
     if (currentScrapIndex >= scraps.length - 1) {
       return;
     }
+    if (scrap === null) {
+      return;
+    }
     // update index and all info
     currentScrapIndex++;
     updateShapeInfo();
@@ -141,8 +189,16 @@ export default function OneScrapView({ navigation }) {
   };
 
   const loadPreviousScrap = () => {
+    // check that scraps are loaded
+    if (scraps == null) {
+      loadScrapsData();
+      return;
+    }
     // check that this is not the first scrap
     if (currentScrapIndex === 0) {
+      return;
+    }
+    if (scrap === null) {
       return;
     }
     // update index and all info
@@ -160,11 +216,10 @@ export default function OneScrapView({ navigation }) {
   const refresh = () => {
     loadScrapsData();
     currentScrapIndex = 0;
-
-  }
+  };
 
   const openFilterWindow = () => {
-    navigation.navigate("Filter Scraps", {onGoBack: refresh});
+    navigation.navigate("Filter Scraps");
   };
 
   return (

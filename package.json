@@ -25,7 +25,8 @@
     "react-native-canvas": "^0.1.39",
     "react-native-dropdown-select-list": "^2.0.5",
     "react-native-navigation": "^7.37.1",
-    "react-native-webview": "^13.2.2"
+    "react-native-webview": "^13.2.2",
+    "expo-location": "~16.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

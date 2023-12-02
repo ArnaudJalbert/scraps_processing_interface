@@ -1,8 +1,10 @@
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import DropdownComponent from "./DropdownComponent";
 import { useEffect, useState } from "react";
 import { Slider } from "@miblanchard/react-native-slider";
 import { defaultStyles } from "./styles/DefaultStyles";
+
+import * as Location from "expo-location";
 
 export default function FilterScraps({ navigation }) {
   // textile classes
@@ -26,6 +28,9 @@ export default function FilterScraps({ navigation }) {
 
   // scrap distance
   const [scrapsDistance, setScrapsDistance] = useState(5);
+
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     const loadTextileClasses = () => {
@@ -54,19 +59,39 @@ export default function FilterScraps({ navigation }) {
         .catch((error) => console.error(error));
     };
     loadTextileTypes();
+
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      console.log(location["coords"])
+    })();
   }, []);
 
   const loadFilteredPage = () => {
     let filter = {};
-    if(selectedClass !== "any"){
+    if (selectedClass !== "any") {
       filter["fabric_class"] = selectedClass;
     }
-    if (selectedType ){
-      filter["fabric_type"] = selectedClass;
+    if (selectedType !== "any") {
+      filter["fabric_type"] = selectedType;
     }
-    global.scrapFilters = filter;
+    if (selectedSelectionChoice === "my scraps") {
+      filter["owner"] = global.loggedUser[0]["user_id"];
+    }
+    else if (selectedSelectionChoice === "only close scraps"){
+        filter["longitude"] = `${location["coords"]["longitude"]}`
+        filter["latitude"] = `${location["coords"]["latitude"]}`
+        filter["distance"] = scrapsDistance
+    }
+    global.scrapFilters[0] = filter;
     navigation.goBack();
-  }
+  };
 
   return (
     <View style={filterStyles.container}>
@@ -118,7 +143,6 @@ export default function FilterScraps({ navigation }) {
         <Text style={defaultStyles.actionButton}> filter</Text>
       </Pressable>
     </View>
-
   );
 }
 
