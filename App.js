@@ -3,7 +3,8 @@ import WelcomePage from "./components/WelcomePage";
 import RegisterScrap from "./components/RegisterScrap";
 import OneScrapView from "./components/OneScrapView";
 import Login from "./components/Login";
-import FilterScraps from "./components/FilterScraps"
+import FilterScraps from "./components/FilterScraps";
+import ScrapInformation from "./components/ScrapInformation";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -12,6 +13,8 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   global.loggedUser = [{}];
   global.scrapFilters = [{}];
+  global.loadedScraps = [[]];
+  global.currentIndex = [0];
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
@@ -23,22 +26,28 @@ export default function App() {
           options={{ title: "capture" }}
         />
         <Stack.Screen
-            name="View Scraps"
-            component={OneScrapView}
-            initialParams={{ navigation: navigator }}
-            options={{ title: "view" }}
+          name="View Scraps"
+          component={OneScrapView}
+          initialParams={{ navigation: navigator }}
+          options={{ title: "view" }}
         />
         <Stack.Screen
-            name="Login"
-            component={Login}
-            initialParams={{ navigation: navigator }}
-            options={{ title: "view" }}
+          name="Login"
+          component={Login}
+          initialParams={{ navigation: navigator }}
+          options={{ title: "view" }}
         />
         <Stack.Screen
-            name="Filter Scraps"
-            component={FilterScraps}
-            initialParams={{ navigation: navigator }}
-            options={{ title: "filter" }}
+          name="Filter Scraps"
+          component={FilterScraps}
+          initialParams={{ navigation: navigator }}
+          options={{ title: "filter" }}
+        />
+        <Stack.Screen
+          name="Scrap Information"
+          component={ScrapInformation}
+          initialParams={{ navigation: navigator }}
+          options={{ title: "information" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

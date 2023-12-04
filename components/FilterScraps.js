@@ -34,7 +34,7 @@ export default function FilterScraps({ navigation }) {
 
   useEffect(() => {
     const loadTextileClasses = () => {
-      fetch("https://scraps-processing-api.fly.dev/textile-classes", {
+      fetch("https://scraps-processing-api-delicate-pond-5077.fly.dev/textile-classes", {
         method: "GET",
       })
         .then((response) => response.json())
@@ -47,7 +47,7 @@ export default function FilterScraps({ navigation }) {
     loadTextileClasses();
 
     const loadTextileTypes = () => {
-      let requestAllTypes = `https://scraps-processing-api.fly.dev/textile-types`;
+      let requestAllTypes = `https://scraps-processing-api-delicate-pond-5077.fly.dev/textile-types`;
       fetch(requestAllTypes, {
         method: "GET",
       })
@@ -69,7 +69,6 @@ export default function FilterScraps({ navigation }) {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      console.log(location["coords"])
     })();
   }, []);
 

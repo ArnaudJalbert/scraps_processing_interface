@@ -1,16 +1,41 @@
 function drawScrapOutline(ctx, origin, scrapPoints, pixelPerCentimeter, zoom) {
   // drawing the scrap
   ctx.beginPath();
-  ctx.moveTo(
-    origin[0] + scrapPoints[0][0] * pixelPerCentimeter * zoom,
-    origin[1] + scrapPoints[0][1] * pixelPerCentimeter * zoom,
-  );
-  for (const scrapPoint of scrapPoints.slice(1)) {
-    const x = origin[0] + scrapPoint[0] * pixelPerCentimeter * zoom;
-    const y = origin[1] + scrapPoint[1] * pixelPerCentimeter * zoom;
+  const firstx = origin[0] + scrapPoints[0][0] * pixelPerCentimeter * zoom;
+  const firsty = origin[1] + scrapPoints[0][1] * pixelPerCentimeter * zoom;
+  ctx.moveTo(firstx, firsty);
+  let a = scrapPoints[0][0] - scrapPoints[0][1];
+  let b;
+  for (let i = 1; i < scrapPoints.length; i++) {
+    // lines on canvas
+    const x = origin[0] + scrapPoints[i][0] * pixelPerCentimeter * zoom;
+    const y = origin[1] + scrapPoints[i][1] * pixelPerCentimeter * zoom;
     ctx.lineTo(x, y);
+
+    a = b;
   }
   ctx.fill();
+  a = scrapPoints[0][0] - scrapPoints[0][1];
+  for (let i = 1; i < scrapPoints.length; i++) {
+    // lines on canvas
+    const x = origin[0] + scrapPoints[i][0] * pixelPerCentimeter * zoom;
+    const y = origin[1] + scrapPoints[i][1] * pixelPerCentimeter * zoom;
+
+    // distance
+    b = scrapPoints[i][0] - scrapPoints[i][1];
+    let distance = Math.sqrt(a * a + b * b);
+    ctx.font = "10px Helvetica";
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
+    const distanceText = `${(distance / pixelPerCentimeter).toFixed(
+      2,
+    )}cm`;
+    ctx.fillStyle = "#ff0000";
+    ctx.fillText(distanceText, x, y);
+    a = b;
+  }
+
+  ctx.fillStyle = "#000";
 }
 
 function drawHorizontalMeasure(
