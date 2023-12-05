@@ -1,4 +1,4 @@
-function drawScrapOutline(ctx, origin, scrapPoints, pixelPerCentimeter, zoom) {
+function drawScrapOutline(ctx, origin, scrapPoints, pixelPerCentimeter, zoom, writeDimensions) {
   // drawing the scrap
   ctx.beginPath();
   const firstx = origin[0] + scrapPoints[0][0] * pixelPerCentimeter * zoom;
@@ -16,23 +16,25 @@ function drawScrapOutline(ctx, origin, scrapPoints, pixelPerCentimeter, zoom) {
   }
   ctx.fill();
   a = scrapPoints[0][0] - scrapPoints[0][1];
-  for (let i = 1; i < scrapPoints.length; i++) {
-    // lines on canvas
-    const x = origin[0] + scrapPoints[i][0] * pixelPerCentimeter * zoom;
-    const y = origin[1] + scrapPoints[i][1] * pixelPerCentimeter * zoom;
+  if (writeDimensions) {
+    for (let i = 1; i < scrapPoints.length; i++) {
+      // lines on canvas
+      const x = origin[0] + scrapPoints[i][0] * pixelPerCentimeter * zoom;
+      const y = origin[1] + scrapPoints[i][1] * pixelPerCentimeter * zoom;
 
-    // distance
-    b = scrapPoints[i][0] - scrapPoints[i][1];
-    let distance = Math.sqrt(a * a + b * b);
-    ctx.font = "10px Helvetica";
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "center";
-    const distanceText = `${(distance / pixelPerCentimeter).toFixed(
-      2,
-    )}cm`;
-    ctx.fillStyle = "#ff0000";
-    ctx.fillText(distanceText, x, y);
-    a = b;
+      // distance
+      b = scrapPoints[i][0] - scrapPoints[i][1];
+      let distance = Math.sqrt(a * a + b * b);
+      ctx.font = "10px Helvetica";
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      const distanceText = `${(distance / pixelPerCentimeter).toFixed(
+          2,
+      )}cm`;
+      ctx.fillStyle = "#ff0000";
+      ctx.fillText(distanceText, x, y);
+      a = b;
+    }
   }
 
   ctx.fillStyle = "#000";
@@ -173,6 +175,7 @@ export default function drawScrap(
   pixelPerCentimeter,
   shapeWidth,
   shapeHeight,
+  writeDimensions,
 ) {
   // setting canvas size to the window size
   ctx.canvas.width = canvasWidth;
@@ -181,7 +184,7 @@ export default function drawScrap(
   // setting the origin at the middle of the canvas
   const origin = [canvasWidth / 2, canvasHeight / 2];
 
-  drawScrapOutline(ctx, origin, scrapPoints, pixelPerCentimeter, zoom);
+  drawScrapOutline(ctx, origin, scrapPoints, pixelPerCentimeter, zoom, writeDimensions);
 
   drawMeasurement(
     ctx,

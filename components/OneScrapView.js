@@ -13,7 +13,13 @@ import {
 const marginHorizontal = 15;
 
 function getShapeInfo(canvasWidth, canvasHeight, scrap) {
-  const shapeInfo = { shapeWidth: 0, shapeHeight: 0, pixelPerCentimeter: 0 };
+  const shapeInfo = {
+    shapeWidth: 0,
+    shapeHeight: 0,
+    pixelPerCentimeter: 0,
+    canvasWidth: canvasWidth,
+    canvasHeight: canvasHeight,
+  };
   // width and height of the shape
   shapeInfo.shapeWidth = getShapeWidth(scrap["dimensions"]);
   shapeInfo.shapeHeight = getShapeHeight(scrap["dimensions"]);
@@ -24,6 +30,8 @@ function getShapeInfo(canvasWidth, canvasHeight, scrap) {
     canvasWidth,
     canvasHeight,
   );
+
+  global.currentShapeInfo[0] = shapeInfo;
 
   return shapeInfo;
 }
@@ -126,6 +134,7 @@ export default function OneScrapView({ navigation }) {
         shapeInformation.pixelPerCentimeter,
         shapeInformation.shapeWidth,
         shapeInformation.shapeHeight,
+          true,
       );
     }
   };
@@ -184,6 +193,10 @@ export default function OneScrapView({ navigation }) {
     navigation.navigate("Scrap Information");
   };
 
+  const openSquareFit = () => {
+    navigation.navigate("SquareFit");
+  };
+
   const refresh = () => {
     loadScrapsData();
     currentScrapIndex = 0;
@@ -217,9 +230,14 @@ export default function OneScrapView({ navigation }) {
             <Text style={oneScrapViewStyles.navigationButtonText}>Next</Text>
           </Pressable>
         </View>
-        <Pressable onPress={openFilterWindow}>
-          <Text style={oneScrapViewStyles.filterButton}>Filter</Text>
-        </Pressable>
+        <View style={oneScrapViewStyles.navigationButtons}>
+          <Pressable onPress={openSquareFit}>
+            <Text style={oneScrapViewStyles.filterButton}>Shape Fit</Text>
+          </Pressable>
+          <Pressable onPress={openFilterWindow}>
+            <Text style={oneScrapViewStyles.filterButton}>Filter</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );

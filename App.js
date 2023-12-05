@@ -5,6 +5,7 @@ import OneScrapView from "./components/OneScrapView";
 import Login from "./components/Login";
 import FilterScraps from "./components/FilterScraps";
 import ScrapInformation from "./components/ScrapInformation";
+import SquareFit from "./components/SquareFit";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
@@ -16,6 +17,7 @@ export default function App() {
   global.scrapFilters = [{}];
   global.loadedScraps = [[]];
   global.currentIndex = [0];
+  global.currentShapeInfo = [{}];
 
   (async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -26,7 +28,7 @@ export default function App() {
 
     let location = await Location.getCurrentPositionAsync({});
     global.location = location;
-    console.log(location)
+    console.log(location);
   })();
 
   return (
@@ -62,6 +64,12 @@ export default function App() {
           component={ScrapInformation}
           initialParams={{ navigation: navigator }}
           options={{ title: "information" }}
+        />
+        <Stack.Screen
+          name="SquareFit"
+          component={SquareFit}
+          initialParams={{ navigation: navigator }}
+          options={{ title: "shape fit" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
