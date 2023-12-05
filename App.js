@@ -7,6 +7,7 @@ import FilterScraps from "./components/FilterScraps";
 import ScrapInformation from "./components/ScrapInformation";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as Location from "expo-location";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,19 @@ export default function App() {
   global.scrapFilters = [{}];
   global.loadedScraps = [[]];
   global.currentIndex = [0];
+
+  (async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    global.location = location;
+    console.log(location)
+  })();
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">

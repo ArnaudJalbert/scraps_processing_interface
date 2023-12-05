@@ -25,11 +25,15 @@ export default function ScrapInformation({ navigation }) {
 
   const [id, setID] = useState("");
   const [textileClass, setTextileClass] = useState("");
+  const [textileType, setTextileType] = useState("");
+  const [note, setNote] = useState("");
 
   useEffect(() => {
     if (scrap !== null) {
       setID(scrap["id"]);
       setTextileClass(scrap["fabric_class"]);
+      setTextileType(scrap["fabric_type"]);
+      setNote(scrap["note"]);
       fetch(
         `https://scraps-processing-api-delicate-pond-5077.fly.dev/user/${scrap["owner"]}`,
         {
@@ -59,24 +63,22 @@ export default function ScrapInformation({ navigation }) {
   return (
     <SafeAreaView style={scrapInformationStyles.container}>
       <ScrollView style={scrapInformationStyles.scrollView} vertical={true}>
-        <Text style={defaultStyles.title}>{scrap["id"]}</Text>
+        <Text style={defaultStyles.title}>{id}</Text>
         <Text style={scrapInformationStyles.title}>textile class</Text>
-        <Text style={scrapInformationStyles.text}>{scrap["fabric_class"]}</Text>
+        <Text style={scrapInformationStyles.text}>{textileClass}</Text>
         <Text style={scrapInformationStyles.title}>textile type</Text>
-        <Text style={scrapInformationStyles.text}>{scrap["fabric_type"]}</Text>
+        <Text style={scrapInformationStyles.text}>{textileType}</Text>
         <Text style={scrapInformationStyles.title}>user</Text>
         <Text style={scrapInformationStyles.text}>{username}</Text>
         <Text style={scrapInformationStyles.title}>user's email</Text>
-
         <Text style={scrapInformationStyles.text}>{email}</Text>
-
         <Text style={scrapInformationStyles.title}>user's instagram</Text>
         <Pressable
           onPress={() =>
-            Linking.openURL(`https://www.instagram.com/${user["instagram"]}/`)
+            Linking.openURL(`https://www.instagram.com/${instagram}/`)
           }
         >
-          <Text style={scrapInformationStyles.text}>{user["instagram"]}</Text>
+          <Text style={scrapInformationStyles.text}>@{instagram}</Text>
         </Pressable>
         <Image
           source={{
@@ -85,7 +87,7 @@ export default function ScrapInformation({ navigation }) {
           style={{ width: 350, height: 300 }}
         ></Image>
         <Text style={scrapInformationStyles.title}>note</Text>
-        <Text style={scrapInformationStyles.text}>{scrap["note"]}</Text>
+        <Text style={scrapInformationStyles.text}>{note}</Text>
       </ScrollView>
     </SafeAreaView>
   );

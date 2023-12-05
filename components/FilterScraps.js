@@ -34,9 +34,12 @@ export default function FilterScraps({ navigation }) {
 
   useEffect(() => {
     const loadTextileClasses = () => {
-      fetch("https://scraps-processing-api-delicate-pond-5077.fly.dev/textile-classes", {
-        method: "GET",
-      })
+      fetch(
+        "https://scraps-processing-api-delicate-pond-5077.fly.dev/textile-classes",
+        {
+          method: "GET",
+        },
+      )
         .then((response) => response.json())
         .then((data) => {
           data.push("any");
@@ -60,16 +63,6 @@ export default function FilterScraps({ navigation }) {
     };
     loadTextileTypes();
 
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
   }, []);
 
   const loadFilteredPage = () => {
@@ -82,11 +75,13 @@ export default function FilterScraps({ navigation }) {
     }
     if (selectedSelectionChoice === "my scraps") {
       filter["owner"] = global.loggedUser[0]["user_id"];
-    }
-    else if (selectedSelectionChoice === "only close scraps"){
-        filter["longitude"] = `${location["coords"]["longitude"]}`
-        filter["latitude"] = `${location["coords"]["latitude"]}`
-        filter["distance"] = scrapsDistance
+    } else if (selectedSelectionChoice === "only close scraps") {
+      console.log(location)
+      if (global.location !== null) {
+        filter["longitude"] = `${global.location["coords"]["longitude"]}`;
+        filter["latitude"] = `${global.location["coords"]["latitude"]}`;
+        filter["distance"] = scrapsDistance;
+      }
     }
     global.scrapFilters[0] = filter;
     navigation.goBack();
