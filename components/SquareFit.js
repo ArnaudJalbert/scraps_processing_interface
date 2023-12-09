@@ -150,7 +150,7 @@ export default function SquareFit({ navigation }) {
       <Slider
         value={1}
         minimumValue={-3}
-        maximumValue={2}
+        maximumValue={4}
         onValueChange={(value) => {
           drawScrap(
             scrap["dimensions"],
@@ -170,7 +170,7 @@ export default function SquareFit({ navigation }) {
       <Slider
         value={1}
         minimumValue={-3}
-        maximumValue={2}
+        maximumValue={4}
         onValueChange={(value) => {
           drawScrap(
             scrap["dimensions"],
