@@ -1,11 +1,4 @@
-import {
-  Alert,
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import Canvas from "react-native-canvas";
 import { defaultStyles } from "./styles/DefaultStyles";
 import { useEffect, useRef, useState } from "react";
@@ -19,35 +12,14 @@ import {
 
 const marginHorizontal = 15;
 
-const testScrapPoints = [
-  {
-    id: "AJ-0001",
-    points: [
-      { x: 2, y: 2 },
-      { x: 4, y: -1 },
-      { x: 3, y: -3 },
-      { x: 1, y: -4 },
-      { x: -2, y: -3 },
-      { x: -3, y: -1 },
-      { x: -2, y: 3 },
-    ],
-  },
-  {
-    id: "AJ-0002",
-    points: [
-      { x: 1, y: 1 },
-      { x: 2, y: 0.5 },
-      { x: 3, y: -3 },
-      { x: 1, y: -4 },
-      { x: -2, y: -2 },
-      { x: -2, y: -1 },
-      { x: -2, y: 3 },
-    ],
-  },
-];
-
 function getShapeInfo(canvasWidth, canvasHeight, scrap) {
-  const shapeInfo = { shapeWidth: 0, shapeHeight: 0, pixelPerCentimeter: 0 };
+  const shapeInfo = {
+    shapeWidth: 0,
+    shapeHeight: 0,
+    pixelPerCentimeter: 0,
+    canvasWidth: canvasWidth,
+    canvasHeight: canvasHeight,
+  };
   // width and height of the shape
   shapeInfo.shapeWidth = getShapeWidth(scrap["dimensions"]);
   shapeInfo.shapeHeight = getShapeHeight(scrap["dimensions"]);
@@ -59,6 +31,8 @@ function getShapeInfo(canvasWidth, canvasHeight, scrap) {
     canvasHeight,
   );
 
+  global.currentShapeInfo[0] = shapeInfo;
+
   return shapeInfo;
 }
 
@@ -67,6 +41,7 @@ export default function OneScrapView({ navigation }) {
   let scraps = [];
   // current scrap to be drawn
   let currentScrapIndex = 0;
+  global.currentIndex[0] = currentScrapIndex;
   // scrap to draw
   let scrap = null;
   // shape information
@@ -91,16 +66,18 @@ export default function OneScrapView({ navigation }) {
       filterString += `${filter}=${filters[filter]}&`;
     }
     filterString = filterString.slice(0, -1);
-    let requestString = `https://scraps-processing-api.fly.dev/scraps`;
+    let requestString = `https://scraps-processing-api-delicate-pond-5077.fly.dev/scraps`;
     if (filterString !== "?") {
       requestString += filterString;
     }
-    console.log(requestString);
     fetch(requestString, options)
       .then((response) => response.json())
       .then(async (data) => {
         if (data.length > 0) {
+          currentScrapIndex = 0;
           scraps = data;
+          global.loadedScraps[0] = data;
+          global.currentIndex[0] = currentScrapIndex;
           scrap = scraps[currentScrapIndex];
           shapeInformation = getShapeInfo(canvasWidth, canvasHeight, scrap);
           updateScrap(0.8);
@@ -157,6 +134,7 @@ export default function OneScrapView({ navigation }) {
         shapeInformation.pixelPerCentimeter,
         shapeInformation.shapeWidth,
         shapeInformation.shapeHeight,
+          true,
       );
     }
   };
@@ -183,6 +161,7 @@ export default function OneScrapView({ navigation }) {
     }
     // update index and all info
     currentScrapIndex++;
+    global.currentIndex[0] = currentScrapIndex;
     updateShapeInfo();
     // update the canvas
     updateScrap(0.9);
@@ -203,6 +182,7 @@ export default function OneScrapView({ navigation }) {
     }
     // update index and all info
     currentScrapIndex--;
+    global.currentIndex[0] = currentScrapIndex;
     updateShapeInfo();
     // update the canvas
     updateScrap(1);
@@ -210,12 +190,17 @@ export default function OneScrapView({ navigation }) {
 
   // show information about the scrap
   const openScrapInformation = () => {
-    console.log("Opening Scrap Information");
+    navigation.navigate("Scrap Information");
+  };
+
+  const openSquareFit = () => {
+    navigation.navigate("SquareFit");
   };
 
   const refresh = () => {
     loadScrapsData();
     currentScrapIndex = 0;
+    global.currentIndex[0] = currentScrapIndex;
   };
 
   const openFilterWindow = () => {
@@ -224,7 +209,7 @@ export default function OneScrapView({ navigation }) {
 
   return (
     <View style={oneScrapViewStyles.container}>
-      <Text style={defaultStyles.title}>Allo</Text>
+      <Text style={defaultStyles.title}>Scraps</Text>
       <Pressable onPress={openScrapInformation}>
         <Canvas style={oneScrapViewStyles.canvas} ref={ref} />
       </Pressable>
@@ -245,9 +230,14 @@ export default function OneScrapView({ navigation }) {
             <Text style={oneScrapViewStyles.navigationButtonText}>Next</Text>
           </Pressable>
         </View>
-        <Pressable onPress={openFilterWindow}>
-          <Text style={oneScrapViewStyles.filterButton}>Filter</Text>
-        </Pressable>
+        <View style={oneScrapViewStyles.navigationButtons}>
+          <Pressable onPress={openSquareFit}>
+            <Text style={oneScrapViewStyles.filterButton}>Shape Fit</Text>
+          </Pressable>
+          <Pressable onPress={openFilterWindow}>
+            <Text style={oneScrapViewStyles.filterButton}>Filter</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );

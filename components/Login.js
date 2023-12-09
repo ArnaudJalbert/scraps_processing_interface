@@ -20,7 +20,7 @@ export default function Login({ navigation }) {
       method: "GET",
     };
     // request address
-    let requestString = `https://scraps-processing-api.fly.dev/user/${login.toLowerCase()}`;
+    let requestString = `https://scraps-processing-api-delicate-pond-5077.fly.dev/user/${login.toLowerCase()}`;
     await fetch(requestString, options)
       .then((response) => {
         if (response.status === 200) {
@@ -51,7 +51,7 @@ export default function Login({ navigation }) {
     };
     let requestString;
     // request address
-    requestString = `https://scraps-processing-api.fly.dev/create-user?username=${username}&email=${email}&instagram=${instagram}`;
+    requestString = `https://scraps-processing-api-delicate-pond-5077.fly.dev/create-user?username=${username}&email=${email}&instagram=${instagram}`;
 
     await fetch(requestString, options)
       .then((response) => {
